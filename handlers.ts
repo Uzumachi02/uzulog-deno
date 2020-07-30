@@ -10,8 +10,7 @@ import {
   existsSync,
   exists,
   BufWriterSync,
-  asString,
-  ABSOLUTETIME_FORMAT,
+  dateToString,
 } from "./deps.ts";
 
 const DEFAULT_FORMATTER = "{levelName} {msg}";
@@ -46,7 +45,7 @@ export class BaseHandler {
     this.levelName = levelName;
 
     this.formatter = options.formatter || DEFAULT_FORMATTER;
-    this.datetimeFormat = options.datetimeFormat || ABSOLUTETIME_FORMAT;
+    this.datetimeFormat = options.datetimeFormat || "ABSOLUTETIME";
 
     if (options.noColor !== undefined) {
       this.noColor = options.noColor;
@@ -86,7 +85,7 @@ export class BaseHandler {
       let value: string | number | unknown[] | Date | null = null;
 
       if (p1 === "datetime") {
-        value = asString(this.datetimeFormat, logRecord.datetime);
+        value = dateToString(this.datetimeFormat, logRecord.datetime);
       } else {
         value = logRecord[p1 as keyof LogRecord];
       }
